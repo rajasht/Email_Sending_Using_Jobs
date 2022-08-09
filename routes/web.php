@@ -30,7 +30,7 @@ Route::get('/', function () {
  * return an Acknowledge message " Birthday Mail Sent Successfully." on successfull execution of dispatch function
  */
 
-
+/*
 Route::get('/send-mail', function () {
     dispatch(function(){
         Mail::to("sagnik@sht.com")
@@ -38,4 +38,25 @@ Route::get('/send-mail', function () {
     })->delay(now()->addSeconds(5));
     echo "Birthday Mail Sent Successfully.";
 });
+*/
+
+// -------------------------------- Sending Mail using Job - Method 2 -----------------------------------
+
+/**
+ * Route to send Mail using Job
+ * dispatch function is used to queue the job
+ * executing sending of mail in a callby function
+ * made the dispatch function execute after 5 seconds
+ * return an Acknowledge message " Birthday Mail Sent Successfully." on successfull execution of dispatch function
+ */
+
+
+Route::get('/send-mail', function () {
+    dispatch(function(){
+        Mail::to("sagnik@sht.com")
+            ->send(new BirthdayReminder);
+    })->delay(now()->addSeconds(5));
+    echo "Mail Sent.";
+});
+
 
