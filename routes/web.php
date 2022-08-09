@@ -1,5 +1,7 @@
 <?php
 
+use App\Mail\BirthdayReminder;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +18,24 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+// -------------------------------- Sending Mail using Job - Method 1 -----------------------------------
+
+/**
+ * Route to send Mail using Job
+ * dispatch function is used to queue the job
+ * executing sending of mail in a callby function
+ * made the dispatch function execute after 5 seconds
+ * return an Acknowledge message " Birthday Mail Sent Successfully." on successfull execution of dispatch function
+ */
+
+
+Route::get('/send-mail', function () {
+    dispatch(function(){
+        Mail::to("sagnik@sht.com")
+            ->send(new BirthdayReminder);
+    })->delay(now()->addSeconds(5));
+    echo "Birthday Mail Sent Successfully.";
+});
+
